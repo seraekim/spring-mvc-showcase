@@ -6,6 +6,7 @@ public class AjaxUtils {
 
 	public static boolean isAjaxRequest(WebRequest webRequest) {
 		String requestedWith = webRequest.getHeader("X-Requested-With");
+		System.out.println("X-Requested-With : "+requestedWith);
 		return requestedWith != null ? "XMLHttpRequest".equals(requestedWith) : false;
 	}
 

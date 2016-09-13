@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
+<c:set var="ctxp" value="${pageContext.request.contextPath}" />
 <html>
 <head>
 	<title>spring-mvc-showcase</title>
@@ -41,7 +42,7 @@
 		</p>
 		<ul>
 			<li>
-				<a id="simpleLink" class="textLink" href="<c:url value="/simple" />">GET /simple</a>
+				<a id="simpleLink" class="textLink" href="${ctxp}/simple">GET /simple</a>
 			</li>
 			<li>
 				<a id="simpleRevisited" class="textLink" href="<c:url value="/simple/revisited" />">GET /simple/revisited</a>
@@ -55,7 +56,7 @@
 		</p>
 		<ul>
 			<li>
-				<a id="byPath" class="textLink" href="<c:url value="/mapping/path" />">By path</a>
+				<a id="byPath" class="textLink" href="<c:url value="/class-mapping/path" />">By path</a>
 			</li>
 			<li>
 				<a id="byPathPattern" class="textLink" href="<c:url value="/mapping/path/wildcard" />">By path pattern</a>
@@ -76,7 +77,7 @@
 				<a id="byHeaderNegation" class="textLink" href="<c:url value="/mapping/header" />">By absence of header</a>
 			</li>
 			<li>
-				<form id="byConsumes" class="readJsonForm" action="<c:url value="/mapping/consumes" />" method="post">
+				<form id="byConsumes" class="readJsonForm" action="<c:url value="/mapping/go=11111" />" method="post">
 					<input id="byConsumesSubmit" type="submit" value="By consumes" />
 				</form>
 			</li>
@@ -110,7 +111,7 @@
 				<a id="var" class="textLink" href="<c:url value="/data/path/foo" />">Path variable</a>
 			</li>
 			<li>
-				<a id="matrixVar" class="textLink" href="<c:url value="/data/matrixvars;foo=bar/simple" />">Matrix variable</a>
+				<a id="matrixVar" class="textLink" href="<c:url value="/data/matrixvars=mm;foo=bar/simple" />">Matrix variable</a>
 			</li>
 			<li>
 				<a id="matrixVarMultiple" class="textLink" href="<c:url value="/data/matrixvars;foo=bar1/multiple;foo=bar2" />">Matrix variables (multiple)</a>
@@ -457,23 +458,28 @@
 <script>
 	MvcUtil = {};
 	MvcUtil.showSuccessResponse = function (text, element) {
+		console.log('MvcUtil.showSuccessResponse - ');
 		MvcUtil.showResponse("success", text, element);
 	};
 	MvcUtil.showErrorResponse = function showErrorResponse(text, element) {
+		console.log('MvcUtil.showErrorResponse - ');
 		MvcUtil.showResponse("error", text, element);
 	};
 	MvcUtil.showResponse = function(type, text, element) {
 		var responseElementId = element.attr("id") + "Response";
 		var responseElement = $("#" + responseElementId);
 		if (responseElement.length == 0) {
+			console.log('MvcUtil.showResponse - length == 0, responseElementId : '+responseElementId+', text : '+text);
 			responseElement = $('<span id="' + responseElementId + '" class="' + type + '" style="display:none">' + text + '</span>').insertAfter(element);
 		} else {
+			console.log('MvcUtil.showResponse - length != 0, responseElementId : '+responseElementId+', text : '+text);
 			responseElement.replaceWith('<span id="' + responseElementId + '" class="' + type + '" style="display:none">' + text + '</span>');
 			responseElement = $("#" + responseElementId);
 		}
 		responseElement.fadeIn("slow");
 	};
 	MvcUtil.xmlencode = function(xml) {
+		console.log('MvcUtil.xmlencode - ');
 		//for IE 
 		var text;
 		if (window.ActiveXObject) {
@@ -502,6 +508,7 @@ $(document).ready(function() {
 
 	$("a.textLink").click(function(){
 		var link = $(this);
+		console.log('textLink click - url : '+link.attr("href"));
 		$.ajax({ url: link.attr("href"), dataType: "text", success: function(text) { MvcUtil.showSuccessResponse(text, link); }, error: function(xhr) { MvcUtil.showErrorResponse(xhr.responseText, link); }});
 		return false;
 	});
@@ -631,6 +638,7 @@ $(document).ready(function() {
 	});
 
 	$("#byHeader").click(function(){
+		console.log('byHeader click');
 		var link = $(this);
 		$.ajax({ url: this.href, dataType: "text", beforeSend: function(req) { req.setRequestHeader("FooHeader", "foo"); }, success: function(form) { MvcUtil.showSuccessResponse(form, link); }, error: function(xhr) { MvcUtil.showErrorResponse(xhr.responseText, link); }});
 		return false;
@@ -641,6 +649,7 @@ $(document).ready(function() {
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
 	$(document).ajaxSend(function(e, xhr, options) {
+		console.log('ajaxSend when executed? - header : '+header + ', token : '+token);
 		xhr.setRequestHeader(header, token);
 	});
 

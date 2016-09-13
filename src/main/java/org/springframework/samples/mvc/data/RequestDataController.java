@@ -32,8 +32,8 @@ public class RequestDataController {
 	}
 
 	@RequestMapping(value="{path}/simple", method=RequestMethod.GET)
-	public @ResponseBody String withMatrixVariable(@PathVariable String path, @MatrixVariable String foo) {
-		return "Obtained matrix variable 'foo=" + foo + "' from path segment '" + path + "'";
+	public @ResponseBody String withMatrixVariable(@PathVariable String path, @MatrixVariable String matrixvars) {
+		return "Obtained matrix variable 'matrixvars=" + matrixvars + "' from path segment '" + path + "'";
 	}
 
 	@RequestMapping(value="{path1}/{path2}", method=RequestMethod.GET)
@@ -46,8 +46,8 @@ public class RequestDataController {
 	}
 
 	@RequestMapping(value="header", method=RequestMethod.GET)
-	public @ResponseBody String withHeader(@RequestHeader String Accept) {
-		return "Obtained 'Accept' header '" + Accept + "'";
+	public @ResponseBody String withHeader(@RequestHeader String Accept, @RequestHeader(required = false, value="X-CSRF-TOKEN") String csrf) {
+		return "Obtained 'Accept' header '" + Accept + "'"+csrf;
 	}
 
 	@RequestMapping(value="cookie", method=RequestMethod.GET)

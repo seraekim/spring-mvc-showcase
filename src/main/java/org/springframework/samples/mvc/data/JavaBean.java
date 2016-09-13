@@ -31,5 +31,8 @@ public class JavaBean {
 	public void setParam3(String param3) {
 		this.param3 = param3;
 	}
-
+	@Override
+	public String toString() {
+		return "JavaBean {param1=[" + param1 + "], param2=[" + param2 + "], param3=[" + param3 + "]}";
+	}
 }

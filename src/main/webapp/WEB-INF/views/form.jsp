@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
@@ -24,7 +26,7 @@
 		  		</c:if>
 		  		<s:bind path="*">
 		  			<c:if test="${status.error}">
-				  		<div id="message" class="error">Form has errors</div>
+				  		<div id="message" class="error">Form has errors ${status.error}</div>
 		  			</c:if>
 		  		</s:bind>
 			</div>
@@ -98,7 +100,8 @@
 				$("#form").submit(function() {  
 					$.post($(this).attr("action"), $(this).serialize(), function(html) {
 						$("#formsContent").replaceWith(html);
-						$('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+						console.log(html);
+						$('html, body').animate({ scrollTop: $("#message").offset().top }, 5000);
 					});
 					return false;  
 				});			

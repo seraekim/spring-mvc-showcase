@@ -22,6 +22,7 @@ public class FormController {
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
+		System.out.println("@ModelAttribute : ajaxAttribute");
 		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
 	}
 
@@ -30,6 +31,7 @@ public class FormController {
 
 	@ModelAttribute("formBean")
 	public FormBean createFormBean() {
+		System.out.println("@ModelAttribute : formBean");
 		return new FormBean();
 	}
 	
@@ -42,11 +44,14 @@ public class FormController {
 								@ModelAttribute("ajaxRequest") boolean ajaxRequest, 
 								Model model, RedirectAttributes redirectAttrs) {
 		if (result.hasErrors()) {
+			System.out.println("result.getFieldError() : "+result.getFieldError());
+			System.out.println("result.hasErrors()");
 			return null;
 		}
 		// Typically you would save to a db and clear the "form" attribute from the session 
 		// via SessionStatus.setCompleted(). For the demo we leave it in the session.
 		String message = "Form submitted successfully.  Bound " + formBean;
+		System.out.println(message);
 		// Success response handling
 		if (ajaxRequest) {
 			// prepare model for rendering success message in this request

@@ -26,9 +26,18 @@
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	
+<!-- 	<context:component-scan base-package="org.springframework.samples" /> -->
+	
+	<beans:bean id="beanNameUrlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+    	<beans:property name="alwaysUseFullPath" value="false"/>
+    	<beans:property name="order" value="0"/>
+	</beans:bean>
+	
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="1"/>
 	</beans:bean>
 	
 	<!-- Only needed because we install custom converters to support the examples in the org.springframewok.samples.mvc.convert package -->
@@ -43,7 +52,25 @@
 
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<beans:import resource="controllers.xml" />
-
-	<task:annotation-driven />
+<!-- 	<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+    <task:annotation-driven />
 	
+	<interceptors>
+        <interceptor>
+            <mapping path="/**"/>
+            <beans:bean id="loggerInterceptor" class="org.springframework.samples.mvc.srkim.interceptor.LoggerInterceptor" />
+        </interceptor>
+    </interceptors>
+    <!-- <cors>
+
+	<mapping path="/**"
+		allowed-origins="http://localhost:8081"
+		allowed-methods="GET, PUT, HEAD"
+		allow-credentials="false"
+		max-age="123" />
+
+	<mapping path="/resources/**"
+		allowed-origins="http://localhost:8081" />
+
+	</cors> -->
 </beans:beans>

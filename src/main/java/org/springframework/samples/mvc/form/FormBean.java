@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -16,14 +19,17 @@ import org.springframework.samples.mvc.convert.MaskFormat;
 
 public class FormBean {
 	
-	@NotEmpty
+	//@NotEmpty
+	@NotBlank
+	@Size(min = 5, message = "\"${validatedValue}\" is ${validatedValue.length() < 2 ? 'way' : ''} too short.")
 	private String name;
 	
 	@Min(21)
 	private int age;
-
+	
 	@DateTimeFormat(iso=ISO.DATE)
-	@Past
+	@Past(message = "The value \"${formatter.format('%1$tY-%1$tm-%1$td', validatedValue)}\" is not in past!")
+	@NotNull(message="널 안돼")
 	private Date birthDate;
 
 	@MaskFormat("(###) ###-####")
