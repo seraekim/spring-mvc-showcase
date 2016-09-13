@@ -211,6 +211,8 @@
 	</repositories>
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<!-- Plugin execution not covered by lifecycle configuration -->
+		<pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -314,5 +316,6 @@
         			</configuration>
       			</plugin>
 		</plugins>
+		</pluginManagement>
 	</build>
 </project>
